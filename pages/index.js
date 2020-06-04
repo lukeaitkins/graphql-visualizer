@@ -28,6 +28,8 @@ const formatWithExtras = (name, extras) => {
   }, name);
 };
 
+const removePagination = (str) => str.replace("Paginator", "");
+
 export default function Home() {
   const [url, setUrl] = useState("https://api.spacex.land/graphql/");
   const [urlForm, setUrlForm] = useState("https://api.spacex.land/graphql/");
@@ -85,6 +87,9 @@ export default function Home() {
           .find((t) => t.name === "Query")
           .fields.forEach((f) => {
             types.find((t) => t.name === f.type.name).isRoot = true;
+            types.find(
+              (t) => t.name === removePagination(f.type.name)
+            ).isRoot = true;
           });
 
         setNodes(
@@ -124,10 +129,16 @@ export default function Home() {
             isRoot: n.isRoot,
           })),
         links: edges
-          .filter(({ from }) => from !== "Query" && from !== "Mutation")
+          .filter(
+            ({ from, to }) =>
+              from !== "Query" &&
+              from !== "Mutation" &&
+              from !== "PaginatorInfo" &&
+              to !== "PaginatorInfo"
+          )
           .map((e) => ({
-            source: e.from,
-            target: e.to,
+            source: removePagination(e.from),
+            target: removePagination(e.to),
             name: e.name,
           })),
       },
