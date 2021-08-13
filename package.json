@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "bootstrap": "^4.5.0",
-    "next": "9.3.5",
+    "next": "11.1.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-force-graph-2d": "^1.16.1"
